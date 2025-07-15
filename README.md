@@ -57,7 +57,7 @@ Below are the full details of the project, including technologies, features, and
 1. **Clone the repository**
    ```bash
    git clone https://github.com/your-username/incentro-interview
-   cd spotify-ai
+   cd incentro-interview
    ```
 
 2. **Install dependencies**
