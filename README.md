@@ -2,7 +2,7 @@
 
 My application to Incentro for the Senior engineer position.
 The goal was to create a single web page that connects to spotify API and has Voice regonition.
-I've added some more features since I had some time left withing the time frame such as incentro specific styling
+I've added some more features since I had some time left within the time frame such as incentro specific styling
 responsive design & I've integrated an AI LLM to allow the user to get some help looking for new music.
 
 Down below is the full details of the project including technologies, features and the tools I used to create the application.
