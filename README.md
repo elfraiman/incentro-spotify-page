@@ -1,11 +1,11 @@
 # Spotify AI - Intelligent Music Discovery
 
-My application to Incentro for the Senior engineer position.
-The goal was to create a single web page that connects to spotify API and has Voice regonition.
-I've added some more features since I had some time left within the time frame such as incentro specific styling
-responsive design & I've integrated an AI LLM to allow the user to get some help looking for new music.
+My application to Incentro for the Senior Engineer position.
+The goal was to create a single web page that connects to the Spotify API and has voice recognition.
+I've added some more features since I had time left within the timeframe, such as Incentro-specific styling,
+responsive design, and I've integrated an AI LLM to allow users to get help discovering new music.
 
-Down below is the full details of the project including technologies, features and the tools I used to create the application.
+Below are the full details of the project, including technologies, features, and the tools I used to create the application.
 
 ## 🎵 Features
 
