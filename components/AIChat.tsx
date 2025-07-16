@@ -7,6 +7,7 @@ interface ChatMessage {
   content: string;
   timestamp: Date;
   suggestions?: string[];
+  searchQuery?: string;
 }
 
 interface AIChatProps {
@@ -58,18 +59,25 @@ export function AIChat({ onSearch }: AIChatProps) {
     try {
       const data = await askAI(messageToSend);
 
+      /* Normalize AI response format to handle both structured objects and plain strings
+       * Structured responses: { message: string, suggestions?: string[], search_query?: string }
+       */
+      const isStructured = data && typeof data === 'object' && data.message;
+      const message = isStructured ? data.message : (typeof data === 'string' ? data : 'Sorry, I got an unexpected response format.');
+      
       const aiMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         type: 'ai',
-        content: data.message,
+        content: message,
         timestamp: new Date(),
-        suggestions: data.suggestions || []
+        suggestions: isStructured ? (data.suggestions || []) : [],
+        searchQuery: isStructured ? data.search_query : undefined
       };
 
       setMessages(prev => [...prev, aiMessage]);
 
       // Automatically search if we have a search query
-      if (data.search_query) {
+      if (isStructured && data.search_query) {
         setTimeout(() => {
           onSearch(data.search_query);
         }, 500);
@@ -95,7 +103,6 @@ export function AIChat({ onSearch }: AIChatProps) {
 
   return (
     <>
-      {/* Chat Toggle Button */}
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -113,10 +120,8 @@ export function AIChat({ onSearch }: AIChatProps) {
         </button>
       </div>
 
-      {/* Chat Window */}
       {isOpen && (
         <div className="fixed bottom-24 right-6 w-96 h-[32rem] bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl z-40 flex flex-col overflow-hidden">
-          {/* Header */}
           <div className="p-4 bg-gradient-to-r from-[var(--primary-mars)] to-[var(--primary-starburst)] text-white">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
@@ -131,7 +136,6 @@ export function AIChat({ onSearch }: AIChatProps) {
             </div>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((message) => (
               <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -139,16 +143,18 @@ export function AIChat({ onSearch }: AIChatProps) {
                   ? 'bg-[var(--primary-mars)] text-white'
                   : 'bg-[var(--surface-elevated)] text-[var(--text-primary)]'
                   }`}>
-                  <p className="text-sm">{message.content}</p>
+                  <p className="text-sm leading-relaxed">{message.content}</p>
+                  
                   {message.suggestions && message.suggestions.length > 0 && (
                     <div className="mt-3 space-y-2">
+                      <p className="text-xs text-[var(--text-muted)] font-medium mb-2">💡 Try asking:</p>
                       {message.suggestions.map((suggestion, index) => (
                         <button
                           key={index}
                           onClick={() => handleSend(suggestion)}
-                          className="block w-full text-left p-2 text-xs bg-[var(--surface)] hover:bg-[var(--border)] rounded-lg transition-colors duration-200 text-[var(--text-secondary)]"
+                          className="block w-full text-left p-2 text-xs bg-[var(--surface)] hover:bg-[var(--primary-mars)]/10 hover:border-[var(--primary-mars)]/30 border border-[var(--border)] rounded-lg transition-all duration-200 text-[var(--text-secondary)] hover:text-[var(--primary-mars)]"
                         >
-                          {suggestion}
+                          <span className="text-[var(--text-muted)]">→</span> {suggestion}
                         </button>
                       ))}
                     </div>
