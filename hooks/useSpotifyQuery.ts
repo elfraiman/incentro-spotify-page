@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { SearchResults } from '../types/spotify';
+import type { SearchResults } from '@spotify/web-api-ts-sdk';
 
 interface SpotifySearchParams {
   query: string;
@@ -8,23 +8,14 @@ interface SpotifySearchParams {
 // Spotify search function
 const searchSpotify = async ({ query }: SpotifySearchParams): Promise<SearchResults> => {
   if (!query.trim()) {
-    return {};
+    return {
+      tracks: { items: [] },
+      artists: { items: [] },
+      albums: { items: [] }
+    };
   }
 
-  // First get access token
-  const authResponse = await fetch('/api/spotify-auth', {
-    method: 'POST',
-  });
-  
-  if (!authResponse.ok) {
-    throw new Error('Failed to get access token');
-  }
-  
-  const authData = await authResponse.json();
-  const accessToken = authData.access_token;
-
-  // Then search with GET method
-  const searchUrl = `/api/spotify-search?q=${encodeURIComponent(query)}&access_token=${accessToken}`;
+  const searchUrl = `/api/spotify-search?q=${encodeURIComponent(query)}`;
   const response = await fetch(searchUrl, {
     method: 'GET',
   });
