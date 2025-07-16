@@ -1,10 +1,19 @@
-import { SearchResults as SearchResultsType } from '../types/spotify';
+import type { Track, Artist, Album } from '@spotify/web-api-ts-sdk';
 import { TrackCard } from './cards/TrackCard';
 import { ArtistCard } from './cards/ArtistCard';
 import { AlbumCard } from './cards/AlbumCard';
 
+interface SpotifySearchResults {
+  tracks?: {
+    items: Track[];
+  };
+  albums?: {
+    items: Album[];
+  };
+}
+
 interface SearchResultsProps {
-  results: SearchResultsType;
+  results: SpotifySearchResults;
   loading?: boolean;
 }
 
@@ -47,43 +56,13 @@ export function SearchResults({ results, loading }: SearchResultsProps) {
             <div className="hidden sm:block w-24 h-px bg-gradient-to-r from-[var(--primary-mars)] to-transparent"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {results.tracks.items.map((track, index) => (
+            {results.tracks.items.map((track: Track, index: number) => (
               <div
                 key={track.id}
                 className="animate-slideInUp"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <TrackCard track={track} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {results.artists?.items && results.artists.items.length > 0 && (
-        <section className="animate-fadeIn" style={{ animationDelay: '0.3s' }}>
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-[var(--primary-incentronaut)] to-[var(--primary-mars)] rounded-xl flex items-center justify-center shadow-lg">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-[var(--text-primary)]">Artists</h2>
-                <p className="text-[var(--text-muted)] text-sm">{results.artists.items.length} artists found</p>
-              </div>
-            </div>
-            <div className="hidden sm:block w-24 h-px bg-gradient-to-r from-[var(--primary-incentronaut)] to-transparent"></div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {results.artists.items.map((artist, index) => (
-              <div
-                key={artist.id}
-                className="animate-slideInUp"
-                style={{ animationDelay: `${(index + 5) * 0.1}s` }}
-              >
-                <ArtistCard artist={artist} />
               </div>
             ))}
           </div>
@@ -107,7 +86,7 @@ export function SearchResults({ results, loading }: SearchResultsProps) {
             <div className="hidden sm:block w-24 h-px bg-gradient-to-r from-[var(--primary-starburst)] to-transparent"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {results.albums.items.map((album, index) => (
+            {results.albums.items.map((album: Album, index: number) => (
               <div
                 key={album.id}
                 className="animate-slideInUp"
