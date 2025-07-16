@@ -23,19 +23,19 @@ export function getSpotifyClient(): SpotifyApi {
   return spotifyClient;
 }
 
-export async function searchSpotify(query: string) {
+export async function searchSpotify(query: string, offset: number = 0, limit: number = 20) {
   const api = getSpotifyClient();
   
   if (!query.trim()) {
     return {
-      tracks: { items: [] },
-      artists: { items: [] },
-      albums: { items: [] }
+      tracks: { items: [], total: 0, offset: 0, limit: 20 },
+      artists: { items: [], total: 0, offset: 0, limit: 20 },
+      albums: { items: [], total: 0, offset: 0, limit: 20 }
     };
   }
 
   try {
-    const results = await api.search(query, ['track', 'album'], 'NL', 20);
+    const results = await api.search(query, ['track', 'album'], 'NL', limit, offset);
     return results;
   } catch (error) {
     console.error('Spotify search error:', error);

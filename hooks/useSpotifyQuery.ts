@@ -1,21 +1,44 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { SearchResults } from '@spotify/web-api-ts-sdk';
+import type { Album, Artist, Track } from '@spotify/web-api-ts-sdk';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+interface SpotifySearchResults {
+  tracks?: {
+    items: Track[];
+    total: number;
+    offset: number;
+    limit: number;
+  };
+  artists?: {
+    items: Artist[];
+    total: number;
+    offset: number;
+    limit: number;
+  };
+  albums?: {
+    items: Album[];
+    total: number;
+    offset: number;
+    limit: number;
+  };
+}
 
 interface SpotifySearchParams {
   query: string;
+  offset?: number;
+  limit?: number;
 }
 
 // Spotify search function
-const searchSpotify = async ({ query }: SpotifySearchParams): Promise<SearchResults> => {
+const searchSpotify = async ({ query, offset = 0, limit = 20 }: SpotifySearchParams): Promise<SpotifySearchResults> => {
   if (!query.trim()) {
     return {
-      tracks: { items: [] },
-      artists: { items: [] },
-      albums: { items: [] }
+      tracks: { items: [], total: 0, offset: 0, limit: 20 },
+      artists: { items: [], total: 0, offset: 0, limit: 20 },
+      albums: { items: [], total: 0, offset: 0, limit: 20 }
     };
   }
 
-  const searchUrl = `/api/spotify-search?q=${encodeURIComponent(query)}`;
+  const searchUrl = `/api/spotify-search?q=${encodeURIComponent(query)}&offset=${offset}&limit=${limit}`;
   const response = await fetch(searchUrl, {
     method: 'GET',
   });
@@ -39,8 +62,8 @@ export function useSpotifySearch() {
     },
   });
 
-  const search = (query: string) => {
-    return mutation.mutateAsync({ query });
+  const search = (query: string, offset?: number, limit?: number) => {
+    return mutation.mutateAsync({ query, offset, limit });
   };
 
   return {
@@ -51,29 +74,4 @@ export function useSpotifySearch() {
     isSuccess: mutation.isSuccess,
     reset: mutation.reset,
   };
-}
-
-// Hook to get cached search results
-export function useSpotifySearchResults(query: string) {
-  return useQuery({
-    queryKey: ['spotify-search', query],
-    queryFn: () => searchSpotify({ query }),
-    enabled: !!query.trim(),
-    staleTime: 10 * 60 * 1000, // 10 minutes for search results
-  });
-}
-
-// Hook to prefetch search results
-export function usePrefetchSpotifySearch() {
-  const queryClient = useQueryClient();
-
-  const prefetch = (query: string) => {
-    queryClient.prefetchQuery({
-      queryKey: ['spotify-search', query],
-      queryFn: () => searchSpotify({ query }),
-      staleTime: 10 * 60 * 1000,
-    });
-  };
-
-  return { prefetch };
 }
