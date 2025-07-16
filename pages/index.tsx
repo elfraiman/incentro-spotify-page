@@ -1,24 +1,77 @@
 import { useState } from 'react';
-import { SearchResults as SearchResultsType } from '../types/spotify';
-import { SearchForm } from '../components/SearchForm';
-import { SearchResults } from '../components/SearchResults';
+import type { Track, Artist, Album } from '@spotify/web-api-ts-sdk';
+import { SearchResults } from '../components/search/SearchResults';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { OrangeBackground } from '../components/ui/OrangeBackground';
 import { AIChat } from '../components/AIChat';
 import { useSpotifySearch } from '../hooks/useSpotifyQuery';
 import { useVoiceSearch } from '../hooks/useVoiceSearch';
+import { SearchForm } from '@/components/search/SearchForm';
+
+interface SpotifySearchResults {
+  tracks?: {
+    items: Track[];
+    total: number;
+    offset: number;
+    limit: number;
+  };
+  artists?: {
+    items: Artist[];
+    total: number;
+    offset: number;
+    limit: number;
+  };
+  albums?: {
+    items: Album[];
+    total: number;
+    offset: number;
+    limit: number;
+  };
+}
 
 export default function Home() {
-  const [results, setResults] = useState<SearchResultsType>({});
+  const [results, setResults] = useState<SpotifySearchResults>({});
+  const [hasSearched, setHasSearched] = useState(false);
+  const [currentQuery, setCurrentQuery] = useState('');
+  const [loadingMore, setLoadingMore] = useState<{ tracks: boolean; albums: boolean }>({
+    tracks: false,
+    albums: false
+  });
   const { search, loading } = useSpotifySearch();
 
   const handleSearch = async (query: string) => {
     try {
+      setHasSearched(true);
+      setCurrentQuery(query);
+      setLoadingMore({ tracks: false, albums: false });
       const searchResults = await search(query);
       setResults(searchResults);
     } catch (error) {
       console.error('Search failed:', error);
       setResults({});
+    }
+  };
+
+  const handleLoadMore = async (type: 'tracks' | 'albums') => {
+    if (!currentQuery || !results[type]) return;
+    
+    try {
+      setLoadingMore(prev => ({ ...prev, [type]: true }));
+      const currentItems = results[type]!.items;
+      const offset = currentItems.length;
+      const moreResults = await search(currentQuery, offset);
+      
+      setResults(prev => ({
+        ...prev,
+        [type]: {
+          ...moreResults[type]!,
+          items: [...currentItems, ...moreResults[type]!.items]
+        }
+      }));
+    } catch (error) {
+      console.error('Load more failed:', error);
+    } finally {
+      setLoadingMore(prev => ({ ...prev, [type]: false }));
     }
   };
 
@@ -33,7 +86,7 @@ export default function Home() {
       <ThemeToggle />
       <OrangeBackground />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
+      <main className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-24 py-12 relative">
         <div className="relative text-center overflow-hidden">
           <div className="relative z-10">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
@@ -72,7 +125,7 @@ export default function Home() {
         </div>
 
 
-        <div className="mb-16">
+        <div className="mb-24">
           <SearchForm
             onSearch={handleSearch}
             onVoiceSearch={startVoiceSearch}
@@ -81,7 +134,7 @@ export default function Home() {
           />
         </div>
 
-        <SearchResults results={results} loading={loading} />
+        <SearchResults results={results} loading={loading} hasSearched={hasSearched} onLoadMore={handleLoadMore} loadingMore={loadingMore} />
       </main>
 
       <AIChat onSearch={handleSearch} />

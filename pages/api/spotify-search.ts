@@ -6,14 +6,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { q } = req.query;
+  const { q, offset, limit } = req.query;
 
   if (!q) {
     return res.status(400).json({ message: 'Query is required' });
   }
 
   try {
-    const results = await searchSpotify(q as string);
+    const offsetNum = offset ? parseInt(offset as string, 10) : 0;
+    const limitNum = limit ? parseInt(limit as string, 10) : 20;
+    
+    const results = await searchSpotify(q as string, offsetNum, limitNum);
     res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ 
