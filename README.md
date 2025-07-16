@@ -7,7 +7,7 @@ responsive design, and I've integrated an AI LLM to allow users to get help disc
 
 Below are the full details of the project, including technologies, features, and the tools I used to create the application.
 
-## 🎵 Features
+##  Features
 
 - **AI-Powered Music Discovery**: Chat with an intelligent AI assistant to find the perfect music for any mood, activity, or occasion
 - **Voice Search**: Use natural language voice commands to search for music
@@ -16,7 +16,7 @@ Below are the full details of the project, including technologies, features, and
 - **Modern UI**: Clean, professional design with smooth animations and responsive layout
 - **Dark/Light Theme**: Toggle between themes for optimal viewing experience
 
-## 🚀 Tech Stack
+##  Tech Stack
 
 ### Frontend & Framework
 - **Next.js 15** - React framework for production
@@ -44,7 +44,7 @@ Below are the full details of the project, including technologies, features, and
 - **Custom Hooks** - Reusable logic
 - **Local State** - Component-level state management
 
-## 🛠️ Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Node.js 18+ 
@@ -89,7 +89,7 @@ Below are the full details of the project, including technologies, features, and
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
-## 🎯 How It Works
+##  How It Works
 
 ### AI-Powered Search
 The application uses Groq AI API to understand natural language queries and convert them into optimized Spotify search parameters. Users can describe their mood, activity, or preferences in plain English.
@@ -103,7 +103,7 @@ React Query handles data fetching and caching, providing instant search results 
 ### Smart Recommendations
 The AI analyzes user queries to provide contextual music suggestions, learning from interactions to improve recommendations over time ( Is the idea, if I had more time i'd hook up the query's into a database and feed it back to the AI for context)
 
-## 📁 Project Structure
+##  Project Structure
 
 Standard NextJS NO SRC FOLDER structure.
 ```
@@ -121,13 +121,13 @@ spotify-ai/
 └── theme/              # Theme configuration
 ```
 
-## 🔧 API Integration
+##  API Integration
 
 ### Groq AI API
 - **Natural Language Processing**: Converts user queries to search parameters
 - **Context Awareness**: Maintains conversation context for better recommendations (Resets on refresh)
 
-## 🎨 Design System
+##  Design System
 
 ### Color Palette
 - **Primary**: Orange (#ff5201) - Brand identity (Incentro)
