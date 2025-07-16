@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 export function useVoiceSearch(onResult: (transcript: string) => void, onInterimResult?: (transcript: string) => void) {
   const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   const startVoiceSearch = useCallback(() => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
@@ -11,6 +12,7 @@ export function useVoiceSearch(onResult: (transcript: string) => void, onInterim
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition;
     
     recognition.continuous = false;
     recognition.interimResults = true;
@@ -32,11 +34,13 @@ export function useVoiceSearch(onResult: (transcript: string) => void, onInterim
 
     recognition.onend = () => {
       setIsListening(false);
+      recognitionRef.current = null;
     };
 
     recognition.onerror = (event) => {
       console.error('Speech recognition error:', event.error);
       setIsListening(false);
+      recognitionRef.current = null;
       
       if (event.error === 'network') {
         alert('Speech service unavailable. This might be due to HTTPS requirement or service timeout. Try again in a moment.');
@@ -60,8 +64,17 @@ export function useVoiceSearch(onResult: (transcript: string) => void, onInterim
     }
   }, [onResult, onInterimResult]);
 
+  const stopVoiceSearch = useCallback(() => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+      recognitionRef.current = null;
+    }
+  }, [isListening]);
+
   return {
     startVoiceSearch,
+    stopVoiceSearch,
     isListening
   };
 }

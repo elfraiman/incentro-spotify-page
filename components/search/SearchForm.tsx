@@ -1,16 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '../ui/Button';
 
 interface SearchFormProps {
   onSearch: (query: string) => void;
   onVoiceSearch: () => void;
+  onVoiceStop?: () => void;
   loading: boolean;
   isListening: boolean;
   voiceInput?: string;
 }
 
-export function SearchForm({ onSearch, onVoiceSearch, loading, isListening, voiceInput }: SearchFormProps) {
+export function SearchForm({ onSearch, onVoiceSearch, onVoiceStop, loading, isListening, voiceInput }: SearchFormProps) {
   const [query, setQuery] = useState('');
+
+  // Update query state when voice input changes or when listening stops
+  //
+  useEffect(() => {
+    if (voiceInput && !isListening) {
+      setQuery(voiceInput);
+    }
+  }, [voiceInput, isListening]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +75,7 @@ export function SearchForm({ onSearch, onVoiceSearch, loading, isListening, voic
                 <Button
                   type="button"
                   variant="secondary"
-                  onClick={onVoiceSearch}
+                  onClick={isListening ? onVoiceStop : onVoiceSearch}
                   disabled={loading}
                   className={`px-6 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${isListening
                     ? 'bg-red-500 hover:bg-red-600 text-white shadow-lg animate-pulse'

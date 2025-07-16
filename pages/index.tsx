@@ -41,15 +41,17 @@ export default function Home() {
   const { search, loading } = useSpotifySearch();
 
   const handleSearch = async (query: string) => {
+    console.log('handleSearch', query);
     try {
       setHasSearched(true);
-      setCurrentQuery(query);
-      setLoadingMore({ tracks: false, albums: false });
+      setCurrentQuery(query); 
       const searchResults = await search(query);
       setResults(searchResults);
     } catch (error) {
       console.error('Search failed:', error);
       setResults({});
+    } finally {
+      setLoadingMore({ tracks: false, albums: false });
     }
   };
 
@@ -85,7 +87,7 @@ export default function Home() {
     setVoiceInput(transcript);
   };
 
-  const { startVoiceSearch, isListening } = useVoiceSearch(handleVoiceResult, handleVoiceInterim);
+  const { startVoiceSearch, stopVoiceSearch, isListening } = useVoiceSearch(handleVoiceResult, handleVoiceInterim);
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)] transition-colors duration-300">
@@ -135,6 +137,7 @@ export default function Home() {
           <SearchForm
             onSearch={handleSearch}
             onVoiceSearch={startVoiceSearch}
+            onVoiceStop={stopVoiceSearch}
             loading={loading}
             isListening={isListening}
             voiceInput={voiceInput}
