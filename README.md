@@ -131,11 +131,12 @@ spotify-ai/
 
 ### Color Palette
 - **Primary**: Orange (#ff5201) - Brand identity (Incentro)
-- **Secondary**: Blue gradients for accents (Complemantry to Incentro's main color)
-- **Neutral**: Gray scale for text and backgrounds
-- **Semantic**: Success, warning, and error states
+- **Secondary**: Blue gradients for accents (Complementary to Incentro's main color)
 
-### Typography
-- **Primary Font**: Work Sans - Modern and readable (Similar to Incentro's premium font, and free :)
-- **Monospace**: JetBrains Mono - For code elements
-- **Responsive**: Fluid typography scaling
+## Improvements I did not have time for
+- **Suspense**: Could've used React Suspense for loading states
+- **Database Integration**: Store search history and user preferences
+- **Enhanced AI Context**: Feed historical queries back to AI for better recommendations
+- **Social Features**: Allow users to share playlists and recommendations
+- **Analytics**: Track popular searches and user behavior
+- **Accessibility**: Enhanced keyboard navigation and screen reader support
