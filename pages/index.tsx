@@ -33,6 +33,7 @@ export default function Home() {
   const [results, setResults] = useState<SpotifySearchResults>({});
   const [hasSearched, setHasSearched] = useState(false);
   const [currentQuery, setCurrentQuery] = useState('');
+  const [voiceInput, setVoiceInput] = useState('');
   const [loadingMore, setLoadingMore] = useState<{ tracks: boolean; albums: boolean }>({
     tracks: false,
     albums: false
@@ -76,10 +77,15 @@ export default function Home() {
   };
 
   const handleVoiceResult = (transcript: string) => {
+    setVoiceInput('');
     handleSearch(transcript);
   };
 
-  const { startVoiceSearch, isListening } = useVoiceSearch(handleVoiceResult);
+  const handleVoiceInterim = (transcript: string) => {
+    setVoiceInput(transcript);
+  };
+
+  const { startVoiceSearch, isListening } = useVoiceSearch(handleVoiceResult, handleVoiceInterim);
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)] transition-colors duration-300">
@@ -131,6 +137,7 @@ export default function Home() {
             onVoiceSearch={startVoiceSearch}
             loading={loading}
             isListening={isListening}
+            voiceInput={voiceInput}
           />
         </div>
 

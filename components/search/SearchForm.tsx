@@ -6,9 +6,10 @@ interface SearchFormProps {
   onVoiceSearch: () => void;
   loading: boolean;
   isListening: boolean;
+  voiceInput?: string;
 }
 
-export function SearchForm({ onSearch, onVoiceSearch, loading, isListening }: SearchFormProps) {
+export function SearchForm({ onSearch, onVoiceSearch, loading, isListening, voiceInput }: SearchFormProps) {
   const [query, setQuery] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -32,11 +33,11 @@ export function SearchForm({ onSearch, onVoiceSearch, loading, isListening }: Se
                 </div>
                 <input
                   type="text"
-                  value={query}
+                  value={isListening && voiceInput ? voiceInput : query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Describe the music you're looking for..."
                   className="w-full pl-12 pr-4 py-4 bg-[var(--surface-elevated)] border border-[var(--border)] rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary-mars)]/20 focus:border-[var(--primary-mars)] transition-all duration-300 text-[var(--text-primary)] placeholder-[var(--text-muted)] text-lg"
-                  disabled={loading}
+                  disabled={loading || isListening}
                 />
               </div>
 
