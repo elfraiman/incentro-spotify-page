@@ -40,7 +40,7 @@ export function SearchForm({ onSearch, onVoiceSearch, loading, isListening }: Se
                 />
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex gap-3 justify-between">
                 <Button
                   type="submit"
                   variant="primary"
