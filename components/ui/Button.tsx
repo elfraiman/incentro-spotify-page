@@ -26,15 +26,15 @@ export function Button({
   };
 
   const variantClasses = {
-    primary: 'bg-incentro-gradient text-white hover:shadow-incentro focus:ring-orange-400',
+    primary: 'bg-gradient-to-r from-[var(--primary-mars)] to-[var(--primary-starburst)] text-white hover:shadow-lg hover:bg-[var(--primary-starburst)] focus:ring-[var(--primary-mars)]',
     secondary: `bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] hover:bg-[var(--surface-elevated)] focus:ring-[var(--accent)]`,
-    voice: `bg-[var(--primary-incentronaut)] text-white hover:bg-opacity-90 focus:ring-blue-400`,
-    outline: `border-2 border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white focus:ring-[var(--accent)]`
+    voice: `bg-[var(--primary-incentronaut)] text-white hover:bg-opacity-90 focus:ring-[var(--primary-incentronaut)]`, 
+    outline: `border-2 border-[var(--primary-mars)] text-[var(--primary-mars)] hover:bg-[var(--primary-mars)] hover:text-white focus:ring-[var(--primary-mars)]`
   };
 
   return (
     <button
-      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
+      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className} cursor-pointer`}
       disabled={disabled || isLoading}
       {...props}
     >
