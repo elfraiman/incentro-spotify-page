@@ -1,26 +1,5 @@
-import type { Album, Artist, Track } from '@spotify/web-api-ts-sdk';
+import { SpotifySearchResults } from '@/pages';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-interface SpotifySearchResults {
-  tracks?: {
-    items: Track[];
-    total: number;
-    offset: number;
-    limit: number;
-  };
-  artists?: {
-    items: Artist[];
-    total: number;
-    offset: number;
-    limit: number;
-  };
-  albums?: {
-    items: Album[];
-    total: number;
-    offset: number;
-    limit: number;
-  };
-}
 
 interface SpotifySearchParams {
   query: string;
@@ -33,7 +12,6 @@ const searchSpotify = async ({ query, offset = 0, limit = 20 }: SpotifySearchPar
   if (!query.trim()) {
     return {
       tracks: { items: [], total: 0, offset: 0, limit: 20 },
-      artists: { items: [], total: 0, offset: 0, limit: 20 },
       albums: { items: [], total: 0, offset: 0, limit: 20 }
     };
   }

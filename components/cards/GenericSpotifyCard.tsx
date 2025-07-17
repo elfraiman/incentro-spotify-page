@@ -1,8 +1,8 @@
+import type { Album, Track } from '@spotify/web-api-ts-sdk';
 import Image from 'next/image';
-import type { Album, Artist, Track } from '@spotify/web-api-ts-sdk';
 import { Button } from '../ui/Button';
 
-type SpotifyItem = Album | Artist | Track;
+type SpotifyItem = Album | Track;
 
 interface GenericSpotifyCardProps {
   item: SpotifyItem;
@@ -41,12 +41,12 @@ export function GenericSpotifyCard({ item, type }: GenericSpotifyCardProps) {
     return type.charAt(0).toUpperCase() + type.slice(1);
   };
 
-
   const handleSpotifyOpen = () => {
     if (item.external_urls?.spotify) {
       window.open(item.external_urls.spotify, '_blank');
     }
   };
+
   const getHoverColor = () => {
     switch (type) {
       case 'album': return 'var(--primary-starburst)';

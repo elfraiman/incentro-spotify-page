@@ -1,20 +1,6 @@
-import type { Album, Track } from '@spotify/web-api-ts-sdk';
+import { SpotifySearchResults } from '@/pages';
 import { ResultSection } from './ResultSection';
 
-interface SpotifySearchResults {
-  tracks?: {
-    items: Track[];
-    total: number;
-    offset: number;
-    limit: number;
-  };
-  albums?: {
-    items: Album[];
-    total: number;
-    offset: number;
-    limit: number;
-  };
-}
 
 interface SearchResultsProps {
   results: SpotifySearchResults;

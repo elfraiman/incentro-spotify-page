@@ -8,15 +8,9 @@ import { useSpotifySearch } from '../hooks/useSpotifyQuery';
 import { useVoiceSearch } from '../hooks/useVoiceSearch';
 import { SearchForm } from '@/components/search/SearchForm';
 
-interface SpotifySearchResults {
+export interface SpotifySearchResults {
   tracks?: {
     items: Track[];
-    total: number;
-    offset: number;
-    limit: number;
-  };
-  artists?: {
-    items: Artist[];
     total: number;
     offset: number;
     limit: number;
@@ -106,7 +100,7 @@ export default function Home() {
 
             <p className="text-lg sm:text-xl text-white/90 max-w-3xl mx-auto mb-8 leading-relaxed">
               Transform the way you find music. Chat with our AI assistant, use voice search, or describe what you&apos;re looking for,
-              and let our intelligent system find the perfect tracks, artists, and albums for you.
+              and let our intelligent system find the perfect tracks and albums for you.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">

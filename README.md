@@ -26,7 +26,7 @@ Below are the full details of the project, including technologies, features, and
 
 ### AI & APIs
 - **Groq AI API** - High-performance AI inference for natural language processing
-- **Spotify Web API** - Access to millions of tracks, artists, and albums
+- **Spotify Web API** - Access to millions of tracks, and albums
 - **Web Speech API** - Browser-native speech recognition for voice commands
 
 ### Development Tools
