@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { searchSpotify } from '../../lib/spotify';
+import { MaxInt } from '@spotify/web-api-ts-sdk';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -14,9 +15,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const offsetNum = offset ? parseInt(offset as string, 10) : 0;
-    const limitNum = limit ? parseInt(limit as string, 10) : 20;
+    const limitNum = limit ? Math.min(parseInt(limit as string, 10), 50) : 20;
     
-    const results = await searchSpotify(q as string, offsetNum, limitNum);
+    const results = await searchSpotify(q as string, offsetNum, limitNum as MaxInt<50>);
     res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ 

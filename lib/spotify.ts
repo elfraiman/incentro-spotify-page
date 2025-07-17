@@ -1,4 +1,4 @@
-import { SpotifyApi } from '@spotify/web-api-ts-sdk';
+import { MaxInt, SpotifyApi } from '@spotify/web-api-ts-sdk';
 
 let spotifyClient: SpotifyApi | null = null;
 
@@ -14,7 +14,6 @@ export function getSpotifyClient(): SpotifyApi {
     throw new Error('Spotify credentials not configured. Please set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET environment variables.');
   }
 
-  // Create global Spotify API client with Client Credentials flow
   spotifyClient = SpotifyApi.withClientCredentials(
     clientId,
     clientSecret
@@ -23,13 +22,12 @@ export function getSpotifyClient(): SpotifyApi {
   return spotifyClient;
 }
 
-export async function searchSpotify(query: string, offset: number = 0, limit: number = 20) {
+export async function searchSpotify(query: string, offset: number = 0, limit: MaxInt<50> = 20) {
   const api = getSpotifyClient();
   
   if (!query.trim()) {
     return {
       tracks: { items: [], total: 0, offset: 0, limit: 20 },
-      artists: { items: [], total: 0, offset: 0, limit: 20 },
       albums: { items: [], total: 0, offset: 0, limit: 20 }
     };
   }
@@ -43,5 +41,4 @@ export async function searchSpotify(query: string, offset: number = 0, limit: nu
   }
 }
 
-// Export the client directly for use across the project
 export { spotifyClient as spotify };
