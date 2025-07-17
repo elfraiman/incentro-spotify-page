@@ -42,6 +42,11 @@ export function GenericSpotifyCard({ item, type }: GenericSpotifyCardProps) {
   };
 
 
+  const handleSpotifyOpen = () => {
+    if (item.external_urls?.spotify) {
+      window.open(item.external_urls.spotify, '_blank');
+    }
+  };
   const getHoverColor = () => {
     switch (type) {
       case 'album': return 'var(--primary-starburst)';
@@ -94,7 +99,7 @@ export function GenericSpotifyCard({ item, type }: GenericSpotifyCardProps) {
 
 
           <div className='flex justify-end'>
-            <Button variant='primary' size='sm' className='flex space-x-2' >
+            <Button variant='primary' size='sm' className='flex space-x-2' onClick={handleSpotifyOpen}>
               <Image
                 src="/spotify-icon.svg"
                 alt="Spotify"

@@ -140,3 +140,5 @@ spotify-ai/
 - **Social Features**: Allow users to share playlists and recommendations
 - **Analytics**: Track popular searches and user behavior
 - **Accessibility**: Enhanced keyboard navigation and screen reader support
+- **VirtualList**: Improve performance
+- **Limit & Offset**: Not giving unique results - could be improved
