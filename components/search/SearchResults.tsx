@@ -1,4 +1,4 @@
-import { SpotifySearchResults } from '@/pages';
+import { SpotifySearchResults } from '@/lib/spotify';
 import { ResultSection } from './ResultSection';
 
 

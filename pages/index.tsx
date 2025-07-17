@@ -1,27 +1,12 @@
+import { SearchForm } from '@/components/search/SearchForm';
+import { SpotifySearchResults } from '@/lib/spotify';
 import { useState } from 'react';
-import type { Track, Artist, Album } from '@spotify/web-api-ts-sdk';
+import { AIChat } from '../components/AIChat';
 import { SearchResults } from '../components/search/SearchResults';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { OrangeBackground } from '../components/ui/OrangeBackground';
-import { AIChat } from '../components/AIChat';
 import { useSpotifySearch } from '../hooks/useSpotifyQuery';
 import { useVoiceSearch } from '../hooks/useVoiceSearch';
-import { SearchForm } from '@/components/search/SearchForm';
-
-export interface SpotifySearchResults {
-  tracks?: {
-    items: Track[];
-    total: number;
-    offset: number;
-    limit: number;
-  };
-  albums?: {
-    items: Album[];
-    total: number;
-    offset: number;
-    limit: number;
-  };
-}
 
 export default function Home() {
   const [results, setResults] = useState<SpotifySearchResults>({});
@@ -35,7 +20,6 @@ export default function Home() {
   const { search, loading } = useSpotifySearch();
 
   const handleSearch = async (query: string) => {
-    console.log('handleSearch', query);
     try {
       setHasSearched(true);
       setCurrentQuery(query); 

@@ -1,4 +1,20 @@
-import { MaxInt, SpotifyApi } from '@spotify/web-api-ts-sdk';
+import { Album, MaxInt, SpotifyApi, Track } from '@spotify/web-api-ts-sdk';
+
+export interface SpotifySearchResults {
+  tracks?: {
+    items: Track[];
+    total: number;
+    offset: number;
+    limit: number;
+  };
+  albums?: {
+    items: Album[];
+    total: number;
+    offset: number;
+    limit: number;
+  };
+}
+
 
 let spotifyClient: SpotifyApi | null = null;
 

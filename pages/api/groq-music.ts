@@ -26,8 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ message: 'Groq API key not configured' });
   }
 
-  console.log('Using Groq API key:', groqApiKey.substring(0, 10) + '...');
-
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -74,8 +72,8 @@ Example:
             content: message
           }
         ],
-        temperature: 0.7,
-        max_tokens: 500,
+        temperature: 0.5,
+        max_tokens: 300,
       }),
     });
 
